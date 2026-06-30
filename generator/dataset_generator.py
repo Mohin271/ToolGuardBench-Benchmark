@@ -32,9 +32,14 @@ from variables import (
     PERSON_NAMES,
     FOLDER_NAMES,
     USER_ROLES,
-    DATABASES
+    DATABASES,
+    SYSTEM_COMPONENTS,
+    TOOLS,
+    ROLES,
+    PROMPT_PREFIXES,
+    ACTION_VERBS,
+    ATTACK_OBJECTS
 )
-
 # ==========================================================
 # Random Seed
 # ==========================================================
@@ -109,54 +114,78 @@ def build_context():
 
     """
     Every generated sample receives
-    ONE shared context.
+    one shared context.
 
-    Query
-    Tool Arguments
-
-    will always use the same values.
+    The same context is reused by:
+        - User Query
+        - Tool Arguments
+        - Evidence
+        - Explanation
     """
 
     context = {
 
-    "city": random.choice(CITIES),
+        # ==========================
+        # CAT_01
+        # ==========================
 
-    "time_reference": random.choice(TIME_REFERENCES),
+        "city": random.choice(CITIES),
 
-    "file_name": random.choice(FILE_NAMES),
+        "time_reference": random.choice(TIME_REFERENCES),
 
-    "person_name": random.choice(PERSON_NAMES),
+        # ==========================
+        # CAT_02
+        # ==========================
 
-    "folder_name": random.choice(FOLDER_NAMES),
+        "file_name": random.choice(FILE_NAMES),
 
-    "user_role": random.choice(USER_ROLES),
+        "person_name": random.choice(PERSON_NAMES),
 
-    "database": random.choice(DATABASES)
+        "folder_name": random.choice(FOLDER_NAMES),
 
-}
+        "user_role": random.choice(USER_ROLES),
 
+        "database": random.choice(DATABASES),
+
+        # ==========================
+        # CAT_03
+        # ==========================
+
+        "system_component": random.choice(SYSTEM_COMPONENTS),
+
+        "tool_name": random.choice(TOOLS),
+
+        "role": random.choice(ROLES),
+
+        "context_prefix": random.choice(PROMPT_PREFIXES),
+
+        "action": random.choice(ACTION_VERBS),
+
+        "attack_object": random.choice(ATTACK_OBJECTS),
+    }
     return context
 
+
 # ==========================================================
-# Placeholder Engine
+# Placeholder Replacement
 # ==========================================================
 
 def replace_placeholders(text, context):
+    """
+    Replaces all placeholders found in the query
+    using the values stored in the context.
+    """
 
     for key, value in context.items():
 
-        placeholder = "{" + key + "}"
+        placeholder = f"{{{key}}}"
 
         text = text.replace(
-
             placeholder,
-
             str(value)
-
         )
 
     return text
-
 
 # ==========================================================
 # Tool Argument Builder
@@ -445,15 +474,17 @@ def generate_dataset():
 # ==========================================================
 
 def print_summary(dataset):
-    """
-    Prints generation statistics.
-    """
+
+    ALL_TEMPLATES = (
+        BENIGN_TOOL_USAGE +
+        AUTHORIZATION_PERMISSION
+    )
 
     print("\n" + "=" * 60)
     print("ToolGuardBench Generator v2.0")
     print("=" * 60)
 
-    print(f"Templates Loaded : {len(BENIGN_TOOL_USAGE)}")
+    print(f"Templates Loaded : {len(ALL_TEMPLATES)}")
     print(f"Samples Generated: {len(dataset)}")
 
     print("=" * 60)
