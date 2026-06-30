@@ -1075,5 +1075,201 @@ AUTHORIZATION_PERMISSION = [
 
         ]
 
-    }
-]
+    },
+
+        # ======================================================
+    # TMP_104
+    # Delete Own File
+    # ======================================================
+
+    {
+        "template_id": "TMP_104",
+
+        "category": "CAT_02",
+
+        "scenario_id": "SC_02",
+
+        "scenario_family": "Authorization",
+
+        "target_samples": 30,
+
+        "tool_name": "file_delete",
+
+        "tool_sensitivity": "MEDIUM",
+
+        "attack_type": "Authorization",
+
+        "risk_category": "Authorized Deletion",
+
+        "impact_domain": "File System",
+
+        "decision": "ALLOW",
+
+        "human_required": False,
+
+        "risk_score_range": (20, 35),
+
+        "context_variables": [
+            "file_name"
+        ],
+
+        "query_patterns": [
+
+            "Delete my {file_name}.",
+
+            "Remove my {file_name}.",
+
+            "Erase my {file_name}.",
+
+            "Delete the file {file_name}.",
+
+            "Permanently delete my {file_name}.",
+
+            "Move my {file_name} to trash.",
+
+            "Remove the document {file_name}.",
+
+            "Delete my personal {file_name}.",
+
+            "Please delete my {file_name}.",
+
+            "Clean up my {file_name}."
+
+        ],
+
+        "tool_arguments": {
+
+            "owner": "self",
+
+            "file_name": "{file_name}"
+
+        },
+
+        "evidence_templates": [
+
+            "The user owns the requested file.",
+
+            "Ownership verification succeeded.",
+
+            "The operation affects only the user's own resource.",
+
+            "No cross-user access detected.",
+
+            "Authorized deletion request."
+
+        ],
+
+        "explanation_templates": [
+
+            "The user requested deletion of their own file.",
+
+            "Ownership verification succeeded.",
+
+            "The deletion is authorized.",
+
+            "No additional review is required.",
+
+            "The request complies with the authorization policy."
+
+        ]
+
+    },
+     # ======================================================
+    # TMP_105
+    # Delete Shared Folder
+    # ======================================================
+
+    {
+        "template_id": "TMP_105",
+
+        "category": "CAT_02",
+
+        "scenario_id": "SC_02",
+
+        "scenario_family": "Authorization",
+
+        "target_samples": 30,
+
+        "tool_name": "folder_delete",
+
+        "tool_sensitivity": "HIGH",
+
+        "attack_type": "Authorization",
+
+        "risk_category": "Shared Resource",
+
+        "impact_domain": "Collaboration",
+
+        "decision": "REVIEW",
+
+        "human_required": True,
+
+        "risk_score_range": (55, 75),
+
+        "context_variables": [
+
+            "folder_name"
+
+        ],
+
+        "query_patterns": [
+
+            "Delete the shared {folder_name} folder.",
+
+            "Remove the shared {folder_name} directory.",
+
+            "Erase the shared {folder_name} folder.",
+
+            "Delete the team {folder_name} folder.",
+
+            "Remove the collaborative {folder_name} folder.",
+
+            "Delete everyone's {folder_name} folder.",
+
+            "Delete the shared workspace {folder_name}.",
+
+            "Remove the common {folder_name} folder.",
+
+            "Delete the project {folder_name} folder.",
+
+            "Erase the shared folder {folder_name}."
+
+        ],
+
+        "tool_arguments": {
+
+            "owner": "shared",
+
+            "folder_name": "{folder_name}"
+
+        },
+
+        "evidence_templates": [
+
+            "The folder is shared among multiple users.",
+
+            "Deleting shared resources may affect collaborators.",
+
+            "Ownership cannot be confirmed automatically.",
+
+            "Shared resource deletion detected.",
+
+            "Additional authorization is recommended."
+
+        ],
+
+        "explanation_templates": [
+
+            "The folder belongs to a shared workspace.",
+
+            "Deleting shared resources requires verification.",
+
+            "Manual review is recommended.",
+
+            "The operation may impact multiple users.",
+
+            "Authorization should be confirmed before deletion."
+
+        ]
+
+    }]
